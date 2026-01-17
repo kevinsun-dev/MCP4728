@@ -1,15 +1,15 @@
 // Demo for configuring the Vref of the MCP4728 4-Channel 12-bit I2C DAC
-#include <Adafruit_MCP4728.h>
+#include <MCP4728.h>
 #include <Wire.h>
 
-Adafruit_MCP4728 mcp;
+MCP4728 mcp;
 
 void setup(void) {
   Serial.begin(115200);
   while (!Serial)
     delay(10); // will pause Zero, Leonardo, etc until serial console opens
 
-  Serial.println("Adafruit MCP4728 test!");
+  Serial.println("MCP4728 test!");
 
   // Try to initialize!
   if (!mcp.begin()) {

@@ -1,4 +1,4 @@
-# Adafruit_MCP4728 [![Build Status](https://github.com/adafruit/Adafruit_MCP4728/workflows/Arduino%20Library%20CI/badge.svg)](https://github.com/adafruit/Adafruit_MCP4728/actions)[![Documentation](https://github.com/adafruit/ci-arduino/blob/master/assets/doxygen_badge.svg)](http://adafruit.github.io/Adafruit_MCP4728/html/index.html)
+# MCP4728 [![Build Status](https://github.com/adafruit/MCP4728/workflows/Arduino%20Library%20CI/badge.svg)](https://github.com/adafruit/MCP4728/actions)[![Documentation](https://github.com/adafruit/ci-arduino/blob/master/assets/doxygen_badge.svg)](http://adafruit.github.io/MCP4728/html/index.html)
 
 This is the Adafruit MCP4728 4-Channel 12-Bit I2C DAC Library for Arduino
 
@@ -15,7 +15,7 @@ Adafruit invests time and resources providing this open source code, please supp
 
 # Contributing
 
-Contributions are welcome! Please read our [Code of Conduct](https://github.com/adafruit/Adafruit_MCP4728/blob/master/CODE_OF_CONDUCT.md>)
+Contributions are welcome! Please read our [Code of Conduct](https://github.com/adafruit/MCP4728/blob/master/CODE_OF_CONDUCT.md>)
 before contributing to help this project stay welcoming.
 
 ## Documentation and doxygen

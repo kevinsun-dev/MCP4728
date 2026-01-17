@@ -1,16 +1,19 @@
 
 /*!
- *  @file Adafruit_MCP4728.cpp
+ *  @file MCP4728.cpp
  *
- *  @mainpage Adafruit MCP4728 4-Channel 12-Bit I2C DAC library
+ *  @mainpage MCP4728 4-Channel 12-Bit I2C DAC library
  *
  *  @section intro_sec Introduction
  *
- * 	I2C Driver for the Adafruit MCP4728 4-Channel 12-Bit I2C DAC library
+ * 	I2C Driver for the MCP4728 4-Channel 12-Bit I2C DAC library
  *
- * 	This is a library for the Adafruit MCP4728 breakout:
+ * 	This is a fork of a library for the Adafruit MCP4728 breakout:
  * 	https://www.adafruit.com/product/4470
  *
+ *  The following text comes from the original developers at Adafruit,
+ *  Kevin does not work there, but thinks their products are dope!
+ * 
  * 	Adafruit invests time and resources providing this open source code,
  *  please support Adafruit and open-source hardware by purchasing products from
  * 	Adafruit!
@@ -21,6 +24,7 @@
  *
  *  @section author Author
  *
+ *  Kevin Sun
  *  Bryan Siepert for Adafruit Industries
  *
  * 	@section license License
@@ -32,14 +36,14 @@
  *     v1.0 - First release
  */
 
-#include "Adafruit_MCP4728.h"
+#include "MCP4728.h"
 #include "Arduino.h"
 #include <Wire.h>
 
 /*!
  *    @brief  Instantiates a new MCP4728 class
  */
-Adafruit_MCP4728::Adafruit_MCP4728(void) {}
+MCP4728::MCP4728(void) {}
 
 /*!
  *    @brief  Sets up the hardware and initializes I2C
@@ -49,7 +53,7 @@ Adafruit_MCP4728::Adafruit_MCP4728(void) {}
  *            The Wire object to be used for I2C connections.
  *    @return True if initialization was successful, otherwise false.
  */
-boolean Adafruit_MCP4728::begin(uint8_t i2c_address, TwoWire *wire) {
+boolean MCP4728::begin(uint8_t i2c_address, TwoWire *wire) {
   i2c_dev = new Adafruit_I2CDevice(i2c_address, wire);
 
   if (!i2c_dev->begin()) {
@@ -75,7 +79,7 @@ boolean Adafruit_MCP4728::begin(uint8_t i2c_address, TwoWire *wire) {
  * @return false if there was an error with I2C communication between the MCU
  * and the DAC
  */
-bool Adafruit_MCP4728::setChannelValue(
+bool MCP4728::setChannelValue(
     MCP4728_channel_t channel, uint16_t new_value, MCP4728_vref_t new_vref,
     MCP4728_gain_t new_gain, MCP4728_pd_mode_t new_pd_mode, bool udac) {
 
@@ -113,7 +117,7 @@ bool Adafruit_MCP4728::setChannelValue(
  * @return false if there was an error with I2C communication between the MCU
  * and the DAC
  */
-bool Adafruit_MCP4728::fastWrite(uint16_t channel_a_value,
+bool MCP4728::fastWrite(uint16_t channel_a_value,
                                  uint16_t channel_b_value,
                                  uint16_t channel_c_value,
                                  uint16_t channel_d_value) {
@@ -146,7 +150,7 @@ bool Adafruit_MCP4728::fastWrite(uint16_t channel_a_value,
  * @return false if there was an error with I2C communication between the MCU
  * and the DAC */
 
-bool Adafruit_MCP4728::saveToEEPROM(void) {
+bool MCP4728::saveToEEPROM(void) {
   uint8_t input_buffer[24];
   uint8_t output_buffer[9];
 
@@ -188,7 +192,7 @@ bool Adafruit_MCP4728::saveToEEPROM(void) {
  * @return current value of the specified channel
  */
 
-uint16_t Adafruit_MCP4728::getChannelValue(MCP4728_channel_t channel) {
+uint16_t MCP4728::getChannelValue(MCP4728_channel_t channel) {
   uint16_t value;
   uint8_t input_buffer[24];
   /* 24 bytes are (3 bytes outreg, 3 bytes EEPROM) x 4 channels */
@@ -208,7 +212,7 @@ uint16_t Adafruit_MCP4728::getChannelValue(MCP4728_channel_t channel) {
  * @return current value of the specified channel
  */
 
-uint16_t Adafruit_MCP4728::getEEPROMValue(MCP4728_channel_t channel) {
+uint16_t MCP4728::getEEPROMValue(MCP4728_channel_t channel) {
   uint16_t value;
   uint8_t input_buffer[24];
   /* 24 bytes are (3 bytes outreg, 3 bytes EEPROM) x 4 channels */

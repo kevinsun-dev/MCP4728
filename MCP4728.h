@@ -1,11 +1,14 @@
 /*!
- *  @file Adafruit_MCP4728.h
+ *  @file MCP4728.h
  *
- * 	I2C Driver for the Adafruit MCP4728 4-Channel 12-Bit I2C DAC library
+ * 	I2C Driver for the MCP4728 4-Channel 12-Bit I2C DAC library
  *
- * 	This is a library for the Adafruit MCP4728 breakout:
+ * 	This is a fork of a library for the Adafruit MCP4728 breakout:
  * 	https://www.adafruit.com/products/4470
  *
+ *  The following text comes from the original developers at Adafruit,
+ *  Kevin does not work there, but thinks their products are dope!
+ * 
  * 	Adafruit invests time and resources providing this open source code,
  *  please support Adafruit and open-source hardware by purchasing products from
  * 	Adafruit!
@@ -14,8 +17,8 @@
  *	BSD license (see license.txt)
  */
 
-#ifndef _ADAFRUIT_MCP4728_H
-#define _ADAFRUIT_MCP4728_H
+#ifndef _MCP4728_H
+#define _MCP4728_H
 
 #include "Arduino.h"
 #include <Adafruit_BusIO_Register.h>
@@ -84,9 +87,9 @@ typedef enum channel {
  *    @brief  Class that stores state and functions for interacting with
  *            the MCP4728 I2C Digital Potentiometer
  */
-class Adafruit_MCP4728 {
+class MCP4728 {
 public:
-  Adafruit_MCP4728();
+  MCP4728();
   bool begin(uint8_t i2c_address = MCP4728_I2CADDR_DEFAULT,
              TwoWire *wire = &Wire);
 
