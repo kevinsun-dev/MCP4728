@@ -34,6 +34,17 @@
 #define MCP4728_FAST_WRITE_CMD                                                 \
   0xC0 ///< Command to write all channels at once with
 
+// General Call Commands (Section 5.4)
+#define MCP4728_GENERAL_CALL_RESET 0x06   ///< General Call Reset command
+#define MCP4728_GENERAL_CALL_WAKEUP 0x09  ///< General Call Wake-up command  
+#define MCP4728_GENERAL_CALL_UPDATE 0x08  ///< General Call Software Update command
+#define MCP4728_GENERAL_CALL_ADDR 0x00    ///< General Call address
+
+// Individual Register Write Commands (Section 5.6.5, 5.6.6, 5.6.7)
+#define MCP4728_VREF_WRITE_CMD 0x80       ///< Write Vref to input registers
+#define MCP4728_GAIN_WRITE_CMD 0xC0       ///< Write Gain to input registers
+#define MCP4728_PD_WRITE_CMD 0xA0         ///< Write Power-Down to input registers
+
 /**
  * @brief Power status values
  *
@@ -105,9 +116,60 @@ public:
 
   uint16_t getChannelValue(MCP4728_channel_t channel);
   uint16_t getEEPROMValue(MCP4728_channel_t channel);
+  
+  // General Call Commands
+  bool generalCallReset(void);
+  bool generalCallWakeup(void);
+  bool generalCallUpdate(void);
+  
+  // Individual parameter control
+  bool setVref(MCP4728_channel_t channel, MCP4728_vref_t vref);
+  bool setAllVref(MCP4728_vref_t vref_a, MCP4728_vref_t vref_b,
+                  MCP4728_vref_t vref_c, MCP4728_vref_t vref_d);
+  bool setGain(MCP4728_channel_t channel, MCP4728_gain_t gain);
+  bool setAllGain(MCP4728_gain_t gain_a, MCP4728_gain_t gain_b,
+                  MCP4728_gain_t gain_c, MCP4728_gain_t gain_d);
+  bool setPowerDown(MCP4728_channel_t channel, MCP4728_pd_mode_t pd_mode);
+  bool setAllPowerDown(MCP4728_pd_mode_t pd_a, MCP4728_pd_mode_t pd_b,
+                       MCP4728_pd_mode_t pd_c, MCP4728_pd_mode_t pd_d);
+  
+  // Read current settings from input registers
+  MCP4728_vref_t getVref(MCP4728_channel_t channel);
+  MCP4728_gain_t getGain(MCP4728_channel_t channel);
+  MCP4728_pd_mode_t getPowerDown(MCP4728_channel_t channel);
+  
+  // Read EEPROM settings
+  MCP4728_vref_t getVrefEEPROM(MCP4728_channel_t channel);
+  MCP4728_gain_t getGainEEPROM(MCP4728_channel_t channel);
+  MCP4728_pd_mode_t getPowerDownEEPROM(MCP4728_channel_t channel);
+
+  bool writeI2CAddress(uint8_t current_address, uint8_t new_address, 
+                       uint8_t sda_pin, uint8_t scl_pin, uint8_t ldac_pin);
+  uint8_t readI2CAddress(uint8_t sda_pin, uint8_t scl_pin, uint8_t ldac_pin);
 
 private:
   bool _init(void);
+  bool _readRegisters(void);  // Read all 24 bytes to update cached values
+  
+  // Cached register values
+  uint16_t _values[4];        // Current DAC values
+  MCP4728_vref_t _vref[4];    // Current Vref settings
+  MCP4728_gain_t _gain[4];    // Current Gain settings
+  MCP4728_pd_mode_t _pd[4];   // Current Power-Down settings
+  
+  uint16_t _values_eeprom[4];        // EEPROM DAC values
+  MCP4728_vref_t _vref_eeprom[4];    // EEPROM Vref settings
+  MCP4728_gain_t _gain_eeprom[4];    // EEPROM Gain settings
+  MCP4728_pd_mode_t _pd_eeprom[4];   // EEPROM Power-Down settings
+  
+  // Bit-bang I2C helpers for address write (requires precise LDAC timing)
+  void _i2c_bb_init(uint8_t sda_pin, uint8_t scl_pin);
+  void _i2c_bb_start(uint8_t sda_pin, uint8_t scl_pin);
+  void _i2c_bb_stop(uint8_t sda_pin, uint8_t scl_pin);
+  bool _i2c_bb_write_byte(uint8_t data, uint8_t sda_pin, uint8_t scl_pin);
+  bool _i2c_bb_write_byte_ldac(uint8_t data, uint8_t sda_pin, uint8_t scl_pin, 
+                                uint8_t ldac_pin);
+  uint8_t _i2c_bb_read_byte(bool ack, uint8_t sda_pin, uint8_t scl_pin);
 
   Adafruit_I2CDevice *i2c_dev;
 };
